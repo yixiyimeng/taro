@@ -1,0 +1,112 @@
+.index {
+    background: #f5f5f5;
+    height: 100%;
+}
+
+.at-nav-bar__title {
+    font-size: 36px;
+    font-weight: 500;
+}
+
+.HomeSwiper {
+    height: 700px;
+}
+
+.btnCurtain {
+    margin-right: 30px;
+    background: green;
+    color: #fff;
+    font-size: 24px;
+}
+
+.Picker_container {
+    margin-top: 30px;
+}
+
+.picker {
+    border-bottom: solid 1px #dee1ec;
+    margin: 10px 0;
+}
+
+.pickerName {
+    font-size: medium;
+    font-weight: 300;
+}
+
+.starSymbol {
+    align-content: center;
+    color: red;
+    margin: 0 20px;
+}
+
+.pickerSelector {
+    margin: 5px 0;
+    text-align: right;
+    margin-right: 20px;
+    font-weight: 300;
+    font-size: medium;
+}
+
+.content_para {
+    text-align: justify;
+    // border-bottom: solid 1px #dee1ec;
+    margin-bottom: 55px;
+}
+
+.bottom_text {
+    margin-left: 30px;
+    font-size: large;
+    font-weight: 350;
+}
+
+.divider {
+    height: 30px;
+}
+
+.price_text {
+    margin: 0 15px;
+    color: red;
+    font-size: large;   
+}
+
+.btnNext {
+    margin-bottom: 15px;
+    margin-right: 10px;
+}
+
+.icon_title {
+    display: flex;
+    flex-direction: row;
+}
+
+.title {
+    margin-left: 10px;
+    font-size: large;
+}
+
+.table {
+    background: #fff;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.table .table_title {
+    text-align: center;
+}
+
+.table .table_info {
+    font-size: 24px;
+    color: red;
+    font-weight: 200;
+    text-align: center;
+}
+
+.table .at-row .at-col .table_content {
+    font-size: small;
+    font-weight: 400;
+    margin: 0 15px;
+}
+
+.table .at-row .at-col .table_red_text {
+    color: red;
+}
