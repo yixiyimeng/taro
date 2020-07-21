@@ -48,14 +48,12 @@ export default class Payment extends Taro.Component {
       current: 1,
       payment_method: "WeChatPay",
       price: 0,
-      openid:''
+      openid:'12334'
     };
-
   }
   /* 获取openid*/
 getOpenid(code){
   const api = 'http://pro1.pro-shield.cn/index.php/api/api/getOpenid?code='+code;
-
   axios
     .get(api, {
       headers: {
@@ -63,12 +61,11 @@ getOpenid(code){
       }
     })
     .then(res => {
-      let openid=res.data.openid||'o-duz51mAJzr7i6Z_YmrRmcKXpZg'
-        this.setState({
-              openid:openid
-         })
-
-        this.getjspackage(openid);
+       let openid=res.data.data.openid||'o-duz51mAJzr7i6Z_YmrRmcKXpZg'
+               this.setState({
+                     openid:openid
+                })
+               this.getjspackage(openid);
     })
     .catch(error => {
       console.log(`An error occurred when check the seat:  ${JSON.stringify(error)}`);
@@ -89,7 +86,23 @@ getjspackage(openid){
       },
     })
     .then(res => {
+      console.log(res)
+if(res.data.code==0){
+  let data=res.data.data;
+  let param={
+    timeStamp:data.timeStamp,
+    nonceStr:data.nonceStr,
+    package:data.package,
+    signType:data.signType,
+    timeStamp:data.timeStamp,
+    paySign:data.paySign
+  }
+ this.setState({
+       jspackage:param
+  })
+  console.log(this.state)
 
+}
     })
     .catch(error => {
       console.log(`An error occurred when check the seat:  ${JSON.stringify(error)}`);
@@ -109,27 +122,26 @@ getjspackage(openid){
   }
 
   btnOnClick() {
-    Taro.requestPayment({
-      timeStamp: '',
-      nonceStr: '',
-      package: '',
-      signType: 'MD5',
-      paySign: '',
-      success: function (res) {
+   console.log(this.state)
+       Taro.requestPayment({
+       ...this.state.jspackage,
+         success: function (res) {
 
-      },
-      fail: function (res) { }
-    })
-    console.log("Payment in processing...");
+         },
+         fail: function (res) { }
+       })
+
   }
 
   componentWillMount() {
     this.setState({
       price: this.$router.params.price||0.01
     });
+    //this.$router.params.code获取不到，原因见：https://www.jianshu.com/p/9282d33e3eeb
+    //let code = this.$router.params.code
     let appid = 'wx3f9a218ca6657448' //公众号appId
     let cur_url = window.location.href
-    let code='011By0xk0fwFqp1srYvk0bz0xk0By0xb'
+    let code='081uL0QM0QyrO72vKVQM0ko1QM0uL0Q-'
     this.getOpenid(code)
     return false
     console.log('redirect_uri: ' + cur_url)
@@ -142,7 +154,6 @@ getjspackage(openid){
       //解析地址的方式获取code
       let code = this.getCodeFromUrl(cur_url)
       //继续发送code至服务端获取openid
-       this.getOpenid(code)
     }
 
   }
@@ -219,7 +230,7 @@ getjspackage(openid){
           size="normal"
           circle
           //   disabled={disable_btnNext}
-          onClick={this.btnOnClick}
+          onClick={this.btnOnClick.bind(this)}
         >
           确认支付
         </AtButton>
