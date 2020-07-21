@@ -123,14 +123,14 @@ if(res.data.code==0){
 
   btnOnClick() {
    console.log(this.state)
-       Taro.requestPayment({
-       ...this.state.jspackage,
-         success: function (res) {
+       // Taro.requestPayment({
+       // ...this.state.jspackage,
+       //   success: function (res) {
 
-         },
-         fail: function (res) { }
-       })
-
+       //   },
+       //   fail: function (res) { }
+       // })
+ 
   }
 
   componentWillMount() {
@@ -154,7 +154,7 @@ if(res.data.code==0){
       //解析地址的方式获取code
       let code = this.getCodeFromUrl(cur_url)
       //继续发送code至服务端获取openid
-       this.getOpenid(code)
+      this.getOpenid(code)
     }
 
   }

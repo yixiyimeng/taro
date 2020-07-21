@@ -61,11 +61,10 @@ getOpenid(code){
       }
     })
     .then(res => {
-       let openid=res.data.data.openid||'o-duz51mAJzr7i6Z_YmrRmcKXpZg'
-               this.setState({
-                     openid:openid
-                })
-               this.getjspackage(openid);
+        this.setState({
+              openid:res.data
+         })
+        this.getjspackage();
     })
     .catch(error => {
       console.log(`An error occurred when check the seat:  ${JSON.stringify(error)}`);
@@ -73,12 +72,11 @@ getOpenid(code){
     });
 }
 /* 获取支付jspackage*/
-getjspackage(openid){
+getjspackage(){
   const api = 'http://pro1.pro-shield.cn/index.php/api/api/pay';
-  console.log(this.state.openid)
   axios
     .post(api,{
-        openid:openid,
+        openid:this.state.openid,
         amount:this.state.price
       }, {
       headers: {
@@ -86,23 +84,7 @@ getjspackage(openid){
       },
     })
     .then(res => {
-      console.log(res)
-if(res.data.code==0){
-  let data=res.data.data;
-  let param={
-    timeStamp:data.timeStamp,
-    nonceStr:data.nonceStr,
-    package:data.package,
-    signType:data.signType,
-    timeStamp:data.timeStamp,
-    paySign:data.paySign
-  }
- this.setState({
-       jspackage:param
-  })
-  console.log(this.state)
 
-}
     })
     .catch(error => {
       console.log(`An error occurred when check the seat:  ${JSON.stringify(error)}`);
@@ -122,15 +104,18 @@ if(res.data.code==0){
   }
 
   btnOnClick() {
-   console.log(this.state)
-       Taro.requestPayment({
-       ...this.state.jspackage,
-         success: function (res) {
+    Taro.requestPayment({
+      timeStamp: '',
+      nonceStr: '',
+      package: '',
+      signType: 'MD5',
+      paySign: '',
+      success: function (res) {
 
-         },
-         fail: function (res) { }
-       })
-
+      },
+      fail: function (res) { }
+    })
+    console.log("Payment in processing...");
   }
 
   componentWillMount() {
@@ -141,9 +126,9 @@ if(res.data.code==0){
     //let code = this.$router.params.code
     let appid = 'wx3f9a218ca6657448' //公众号appId
     let cur_url = window.location.href
-    // let code='081uL0QM0QyrO72vKVQM0ko1QM0uL0Q-'
-    // this.getOpenid(code)
-    // return false
+    let code='081uL0QM0QyrO72vKVQM0ko1QM0uL0Q-'
+    this.getOpenid(code)
+    return false
     console.log('redirect_uri: ' + cur_url)
     if (cur_url.indexOf('code') < 0){
       //当前地址不含code,则需要请求code,通过回调当前页面来返回code
@@ -154,7 +139,6 @@ if(res.data.code==0){
       //解析地址的方式获取code
       let code = this.getCodeFromUrl(cur_url)
       //继续发送code至服务端获取openid
-       this.getOpenid(code)
     }
 
   }
@@ -231,7 +215,7 @@ if(res.data.code==0){
           size="normal"
           circle
           //   disabled={disable_btnNext}
-          onClick={this.btnOnClick.bind(this)}
+          onClick={this.btnOnClick}
         >
           确认支付
         </AtButton>

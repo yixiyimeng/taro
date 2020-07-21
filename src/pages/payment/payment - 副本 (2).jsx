@@ -48,12 +48,15 @@ export default class Payment extends Taro.Component {
       current: 1,
       payment_method: "WeChatPay",
       price: 0,
-      openid:'12334'
+      openid:'',
+      jspackage:{}
     };
+
   }
   /* 获取openid*/
 getOpenid(code){
   const api = 'http://pro1.pro-shield.cn/index.php/api/api/getOpenid?code='+code;
+
   axios
     .get(api, {
       headers: {
@@ -61,11 +64,12 @@ getOpenid(code){
       }
     })
     .then(res => {
-       let openid=res.data.data.openid||'o-duz51mAJzr7i6Z_YmrRmcKXpZg'
-               this.setState({
-                     openid:openid
-                })
-               this.getjspackage(openid);
+      let openid=res.data.openid||'o-duz51mAJzr7i6Z_YmrRmcKXpZg'
+        this.setState({
+              openid:openid
+         })
+console.log(this.state)
+        this.getjspackage(openid);
     })
     .catch(error => {
       console.log(`An error occurred when check the seat:  ${JSON.stringify(error)}`);
@@ -120,16 +124,15 @@ if(res.data.code==0){
       payment_method: value
     });
   }
-
   btnOnClick() {
-   console.log(this.state)
-       Taro.requestPayment({
-       ...this.state.jspackage,
-         success: function (res) {
+console.log(this.state)
+    Taro.requestPayment({
+    ...this.state.jspackage,
+      success: function (res) {
 
-         },
-         fail: function (res) { }
-       })
+      },
+      fail: function (res) { }
+    })
 
   }
 
@@ -137,13 +140,11 @@ if(res.data.code==0){
     this.setState({
       price: this.$router.params.price||0.01
     });
-    //this.$router.params.code获取不到，原因见：https://www.jianshu.com/p/9282d33e3eeb
-    //let code = this.$router.params.code
     let appid = 'wx3f9a218ca6657448' //公众号appId
     let cur_url = window.location.href
-    // let code='081uL0QM0QyrO72vKVQM0ko1QM0uL0Q-'
-    // this.getOpenid(code)
-    // return false
+    let code='011By0xk0fwFqp1srYvk0bz0xk0By0xb'
+    this.getOpenid(code)
+    return false
     console.log('redirect_uri: ' + cur_url)
     if (cur_url.indexOf('code') < 0){
       //当前地址不含code,则需要请求code,通过回调当前页面来返回code
